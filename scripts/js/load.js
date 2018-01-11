@@ -7,7 +7,7 @@ var loadState = {
 		game.scale.pageAlignVertically = true;
 		//game.forceSingleUpdate = true;
 		
-		var loadingLabel = game.add.text(80,150,'loading...',{font: '30px Courier', fill:'#ffffff'});
+		var loadingLabel = game.add.text(100,200,'Loading the Stach...',{font: '30px Courier', fill:'#ffffff'});
 		
 		game.load.script('particlestorm', 'scripts/particle-storm.min.js');
 

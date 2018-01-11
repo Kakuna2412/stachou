@@ -71,8 +71,7 @@
 			}
 		}
 		
-		var button = game.add.button(game.world.width-193-8, 8, 'button', '', this, 2, 1, 0);
-		button.onInputUp.add(this.Win,this);
+		var button = game.add.button(game.world.width-193-8, 8, 'button', this.Win, this, 2, 1, 0);
 		
 		var button = game.add.button(game.world.width-64-8, game.world.height-64-8, 'buttonfull', gofull, this, 1, 0);
 	},

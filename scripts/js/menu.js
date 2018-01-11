@@ -51,8 +51,7 @@ var menuState = {
 		font1_add.tint = 0xFFFFFF;
 		font1_add.anchor.set(0.5, 1);
 
-		var button = game.add.button(game.world.width-193-8, 8, 'button', '', this, 2, 1, 0);
-		button.onInputUp.add(this.start,this);
+		var button = game.add.button(game.world.width-193-8, 8, 'button', this.start, this, 2, 1, 0);
 		
 		var button = game.add.button(game.world.width-64-8, game.world.height-64-8, 'buttonfull', gofull, this, 1, 0);
 	},
