@@ -1,7 +1,6 @@
 var previewgroup;
 var previewnb;
 var preview;
-var previewname;
 var previewimg;
 var deck1nb;
 var deck1nbdisp;
@@ -18,13 +17,11 @@ var deckbuildState = {
 		
 		previewgroup = game.add.group(); //previewgroup.create(x,y,'img');sprite
 		preview = new Array(12);
-		previewname = new Array(12);
 		previewimg = new Array(12);
 		previewnb = 0;
 		for (var i=0;i<12;i++){
-			previewname[i] = game.add.retroFont('font', 31, 25, Phaser.RetroFont.TEXT_SET6, 10, 1, 1);
-			previewimg[i] = game.add.image(400+130*(i%4), 100+180*(Math.floor(i/4)), previewname[i]);
-			previewimg[i].tint = 0xFFFFFF;
+			previewimg[i] = game.add.image(400+130*(i%4), 100+180*(Math.floor(i/4)), 'cardtemp');
+			previewimg[i].scale.setTo(0.5,0.5);
 			previewimg[i].anchor.set(0, 0);
 			previewimg[i].inputEnabled = true;
 			previewimg[i].events.onInputDown.add(this.addDeck.bind(this,i), this);
@@ -82,12 +79,30 @@ var deckbuildState = {
 		for (var i=0;i<12;i++){
 			if (previewnb+i<nb_cards){
 				preview[i] = new Card(previewnb+i);
-				previewname[i].text = preview[i].name;
+				previewimg[i].removeChildren();
+				var img = game.add.image(20,31, preview[i].image);
+				previewimg[i].addChild(img);
+				var name = game.add.text(2, 2, preview[i].name, {font: "20px Arial", fill: "#0080ff"});
+				previewimg[i].addChild(name);
+				var mana = game.add.text(198, 2, preview[i].mana, {font: "20px Arial", fill: "#0080ff"});
+				mana.anchor.set(1,0);
+				previewimg[i].addChild(mana);
+				var type = game.add.text(2, 150, preview[i].type, {font: "20px Arial", fill: "#0080ff"});
+				previewimg[i].addChild(type);
+				if (preview[i].type=='creature'){
+					var atk = game.add.text(2, 298, preview[i].atk, {font: "20px Arial", fill: "#0080ff"});
+					atk.anchor.set(0,1);
+					previewimg[i].addChild(atk);
+					var def = game.add.text(198, 298, preview[i].def, {font: "20px Arial", fill: "#0080ff"});
+					def.anchor.set(1,1);
+					previewimg[i].addChild(def);
+				}
 				previewimg[i].events.onInputDown.removeAll(this);
 				previewimg[i].events.onInputDown.add(this.addDeck.bind(this,previewnb+i), this);
+				previewimg[i].visible=true;
 			}else{
-				previewname[i].text = '';
 				previewimg[i].events.onInputDown.removeAll(this);
+				previewimg[i].visible=false;
 			}
 		}
 	},

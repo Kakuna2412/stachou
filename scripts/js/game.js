@@ -19,8 +19,8 @@
 		
 		deck1shuff = deck1;
 		deck2shuff = deck2;
-		shuffle(deck1shuff);
-		shuffle(deck2shuff);
+		Phaser.ArrayUtils.shuffle(deck1shuff);
+		Phaser.ArrayUtils.shuffle(deck2shuff);
 		hp1 = 25;
 		hp2 = 25;
 		hand1 = new Array(12);
