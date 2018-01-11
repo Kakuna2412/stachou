@@ -80,22 +80,19 @@ var deckbuildState = {
 			if (previewnb+i<nb_cards){
 				preview[i] = new Card(previewnb+i);
 				previewimg[i].removeChildren();
-				var img = game.add.image(20,31, preview[i].image);
+				var img = game.add.image(20,40, preview[i].image);
 				previewimg[i].addChild(img);
-				var name = game.add.text(2, 2, preview[i].name, {font: "20px Arial", fill: "#0080ff"});
+				var name = game.add.text(20, 14, preview[i].name, {font: "20px Arial", fill: "#0080ff"});
 				previewimg[i].addChild(name);
-				var mana = game.add.text(198, 2, preview[i].mana, {font: "20px Arial", fill: "#0080ff"});
+				var mana = game.add.text(223, 14, preview[i].mana, {font: "20px Arial", fill: "#0080ff"});
 				mana.anchor.set(1,0);
 				previewimg[i].addChild(mana);
-				var type = game.add.text(2, 150, preview[i].type, {font: "20px Arial", fill: "#0080ff"});
+				var type = game.add.text(20, 186, preview[i].type, {font: "20px Arial", fill: "#0080ff"});
 				previewimg[i].addChild(type);
 				if (preview[i].type=='creature'){
-					var atk = game.add.text(2, 298, preview[i].atk, {font: "20px Arial", fill: "#0080ff"});
-					atk.anchor.set(0,1);
-					previewimg[i].addChild(atk);
-					var def = game.add.text(198, 298, preview[i].def, {font: "20px Arial", fill: "#0080ff"});
-					def.anchor.set(1,1);
-					previewimg[i].addChild(def);
+					var atkdef = game.add.text(220, 328, preview[i].atk + "/" + preview[i].def, {font: "20px Arial", fill: "#0080ff"});
+					atkdef.anchor.set(1,1);
+					previewimg[i].addChild(atkdef);
 				}
 				previewimg[i].events.onInputDown.removeAll(this);
 				previewimg[i].events.onInputDown.add(this.addDeck.bind(this,previewnb+i), this);
