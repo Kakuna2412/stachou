@@ -17,9 +17,6 @@
 	
 	create: function () {
 		
-		var fullscreenKey = game.input.keyboard.addKey(Phaser.Keyboard.F);
-		fullscreenKey.onDown.add(gofull, this);
-		
 		deck1shuff = deck1;
 		deck2shuff = deck2;
 		shuffle(deck1shuff);
@@ -74,8 +71,10 @@
 			}
 		}
 		
-		var zkey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
-		zkey.onDown.addOnce(this.Win,this);
+		var button = game.add.button(game.world.width-193-8, 8, 'button', '', this, 2, 1, 0);
+		button.onInputUp.add(this.Win,this);
+		
+		var button = game.add.button(game.world.width-64-8, game.world.height-64-8, 'buttonfull', gofull, this, 1, 0);
 	},
 	
 	update: function () { //updateonlywhenplay/action
@@ -92,7 +91,8 @@
 	},
 	
 	Win: function () {
-		game.state.start('win');
+		if (arguments[2])
+			game.state.start('win');
 	},
 	
 	playCard: function (player,nb,i,j) {

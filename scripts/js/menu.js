@@ -6,9 +6,6 @@ var menuState = {
 		
 	create: function () {
 		
-		var fullscreenKey = game.input.keyboard.addKey(Phaser.Keyboard.F);
-		fullscreenKey.onDown.add(gofull, this);
- 
 		game.add.image(0, 0, 'sky');
  
 		manager = this.game.plugins.add(Phaser.ParticleStorm);
@@ -41,13 +38,6 @@ var menuState = {
 		var font2_add = game.add.image(game.world.centerX, game.world.centerY+32, font2);
 		font2_add.tint = 0x60FFFF;
 		font2_add.anchor.set(0.5, 1);
-	
-		font3 = game.add.retroFont('font', 31, 25, Phaser.RetroFont.TEXT_SET6, 10, 1, 1);
-		var font3_add = game.add.image(game.world.width-8, game.world.height-8, font3);
-		font3_add.tint = 0x6060FF;
-		font3_add.anchor.set(1, 1);
-		font3_add.scale.setTo(0.5,0.5);
-		font3.text = "F : fullscreen";
  
 		emitter.addToWorld();
  
@@ -61,9 +51,10 @@ var menuState = {
 		font1_add.tint = 0xFFFFFF;
 		font1_add.anchor.set(0.5, 1);
 
-		var nameLabel = game.add.text(80,150,'Press Z',{font: '30px Courier', fill:'#ffffff'});
-		var wkey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
-		wkey.onDown.addOnce(this.start,this);
+		var button = game.add.button(game.world.width-193-8, 8, 'button', '', this, 2, 1, 0);
+		button.onInputUp.add(this.start,this);
+		
+		var button = game.add.button(game.world.width-64-8, game.world.height-64-8, 'buttonfull', gofull, this, 1, 0);
 	},
 	
 	update: function () {
@@ -76,7 +67,8 @@ var menuState = {
 	},
 	
 	start: function () {
-		game.state.start('deckbuild');
+		if (arguments[2])
+			game.state.start('deckbuild');
 	}
 
 };

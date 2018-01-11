@@ -11,15 +11,18 @@ var loadState = {
 		
 		game.load.script('particlestorm', 'scripts/particle-storm.min.js');
 
+		game.load.spritesheet('button', 'assets/buttons/button_sprite_sheet.png', 193, 71, 3);
+		game.load.spritesheet('buttonfull', 'assets/buttons/fullscreen-button64.png', 64, 64, 2);
+		
 		game.load.image('font', 'assets/menu/font.png');	
 		game.load.image('sky', 'assets/menu/sky.jpg');
 		game.load.image('cloud', 'assets/menu/stach_tsp.png');
 		game.load.image('star', 'assets/menu/pixel4x4_yellow.png');
 		
-		game.load.image('card1img', 'assets/play/card1.jpg');
-		game.load.image('card2img', 'assets/play/card2.jpg');
-		game.load.image('card3img', 'assets/play/card3.jpg');
-		game.load.image('card4img', 'assets/play/card4.jpg');
+		game.load.image('card1img', 'assets/cards/card1.jpg');
+		game.load.image('card2img', 'assets/cards/card2.jpg');
+		game.load.image('card3img', 'assets/cards/card3.jpg');
+		game.load.image('card4img', 'assets/cards/card4.jpg');
 	},
 	
 	create: function () {
