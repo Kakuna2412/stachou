@@ -1,5 +1,7 @@
+var previewgroup;
+var previewnb;
 var preview;
-var previewtxt;
+var previewname;
 var previewimg;
 var deck1nb;
 var deck1nbdisp;
@@ -12,21 +14,22 @@ var deckbuildState = {
 	
 	create: function () {
 		
-		preview = new Array(nb_cards);
-		for (var i=0;i<nb_cards;i++){
-			preview[i] = new Card(i);
-		}
-		previewtxt = new Array(nb_cards);
-		previewimg = new Array(nb_cards);
-		for (var i=0;i<nb_cards;i++){
-			previewtxt[i] = game.add.retroFont('font', 31, 25, Phaser.RetroFont.TEXT_SET6, 10, 1, 1);
-			previewimg[i] = game.add.image(520, 20+40*i, previewtxt[i]);
+		game.add.image(0, 0, 'deckbuild_background');
+		
+		previewgroup = game.add.group(); //previewgroup.create(x,y,'img');sprite
+		preview = new Array(12);
+		previewname = new Array(12);
+		previewimg = new Array(12);
+		previewnb = 0;
+		for (var i=0;i<12;i++){
+			previewname[i] = game.add.retroFont('font', 31, 25, Phaser.RetroFont.TEXT_SET6, 10, 1, 1);
+			previewimg[i] = game.add.image(400+130*(i%4), 100+180*(Math.floor(i/4)), previewname[i]);
 			previewimg[i].tint = 0xFFFFFF;
 			previewimg[i].anchor.set(0, 0);
-			previewtxt[i].text = preview[i].name;
 			previewimg[i].inputEnabled = true;
 			previewimg[i].events.onInputDown.add(this.addDeck.bind(this,i), this);
 		}
+		this.dispPreview();
 		
 		deck1nb = 0;
 		deck1nbdisp = game.add.retroFont('font', 31, 25, Phaser.RetroFont.TEXT_SET6, 10, 1, 1);
@@ -47,7 +50,7 @@ var deckbuildState = {
 			deck1txt[i].text = '';
 		}
 		
-		game.add.button(20, 500, 'button', this.autoDeck, this, 2, 1, 0);
+		game.add.button(20, 500, 'buttonauto', this.autoDeck, this, 2, 1, 0);
 		
 		//deck1nb = 10;
 		//deck1 = [new Card(0), new Card(0), new Card(0), new Card(0), new Card(1), new Card(1), new Card(1), new Card(2), new Card(2), new Card(3)];
@@ -56,13 +59,44 @@ var deckbuildState = {
 		
 		game.add.button(game.world.width-193-8, 8, 'button', this.Win, this, 2, 1, 0);
 		
-		game.add.button(game.world.width-64-8, game.world.height-64-8, 'buttonfull', gofull, this, 1, 0);
+		var button = game.add.button(game.world.width-32-8, game.world.height-32-8-64, 'buttonfull', this.previewDown, this, 1, 0);
+		button.scale.setTo(0.5,0.5);
+		var button = game.add.button(game.world.width-32-8, 150, 'buttonfull', this.previewUp, this, 1, 0);
+		button.scale.setTo(0.5,0.5);
+		
+		var button = game.add.button(game.world.width-32-8, game.world.height-32-8, 'buttonfull', gofull, this, 1, 0);
+		button.scale.setTo(0.5,0.5);
+	},
+	
+	previewDown: function() {
+		if (previewnb+12<nb_cards)
+			previewnb = previewnb+12;
+		this.dispPreview();
+	},
+	
+	previewUp: function() {
+		if (previewnb>0)
+			previewnb = previewnb-12;
+		this.dispPreview();
+	},
+	
+	dispPreview: function() {
+		for (var i=0;i<12;i++){
+			if (previewnb+i<nb_cards){
+				preview[i] = new Card(previewnb+i);
+				previewname[i].text = preview[i].name;
+				previewimg[i].events.onInputDown.removeAll(this);
+				previewimg[i].events.onInputDown.add(this.addDeck.bind(this,previewnb+i), this);
+			}else{
+				previewname[i].text = '';
+				previewimg[i].events.onInputDown.removeAll(this);
+			}
+		}
 	},
 	
 	autoDeck: function() {
-		deck1nb = 0;
-		for (var i=0;i<10;i++)
-			this.addDeck(Math.floor(Math.random()*4));
+		for (var i=deck1nb;i<10;i++)
+			this.addDeck(Math.floor(Math.random()*nb_cards));
 		this.dispDeck();
 	},
 	
@@ -98,7 +132,7 @@ var deckbuildState = {
 	},
 	
 	dispDeck: function() {
-		deck1nbdisp.text = "" + deck1nb;
+		deck1nbdisp.text = deck1nb + " out of 10";
 		for(var i=0;i<10;i++){
 			if (i<deck1nb)
 				deck1txt[i].text = deck1[i].name;
