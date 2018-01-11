@@ -51,13 +51,11 @@ var deckbuildState = {
 		}
 		
 		game.add.button(20, 500, 'buttonauto', this.autoDeck, this, 2, 1, 0);
-		
-		//deck1nb = 10;
-		//deck1 = [new Card(0), new Card(0), new Card(0), new Card(0), new Card(1), new Card(1), new Card(1), new Card(2), new Card(2), new Card(3)];
+
 		deck2 = [new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(1), new Card(1)];
 		this.dispDeck();
 		
-		game.add.button(game.world.width-193-8, 8, 'button', this.Win, this, 2, 1, 0);
+		game.add.button(game.world.width-193-8, 8, 'button', this.startGame, this, 2, 1, 0);
 		
 		var button = game.add.button(game.world.width-32-8, game.world.height-32-8-64, 'buttonfull', this.previewDown, this, 1, 0);
 		button.scale.setTo(0.5,0.5);
@@ -145,7 +143,7 @@ var deckbuildState = {
 
 	},
 	
-	Win: function () {
+	startGame: function () {
 		if (arguments[2] && (deck1nb == 10))
 			game.state.start('game');
 	}

@@ -33,6 +33,7 @@
 		}
 		topdeck1 = 7;
 		topdeck2 = 7;
+		
 		board1 = new Array(3);
 		board2 = new Array(3);
 		for (var i=0;i<3;i++){
@@ -57,19 +58,20 @@
 			hand2disp_tmp.tint = 0xFFFFFF;
 			hand2disp_tmp.anchor.set(0, 0);
 		}
+		this.dispHands();
 
-		for (var i=0;i<3;i++){
-			for (var j=0;j<3;j++){
-				if (board1[i][j]==0)
-					var winLabel = game.add.text(310+80*j,150+50*i,'-',{font: '30px Courier', fill:'#ffffff'});
-				else
-					var winLabel = game.add.text(310+80*j,150+50*i,board1[i][j].name,{font: '30px Courier', fill:'#ffffff'});
-				if (board2[i][j]==0)
-					var winLabel = game.add.text(610+80*j,150+50*i,'-',{font: '30px Courier', fill:'#ffffff'});
-				else
-					var winLabel = game.add.text(610+80*j,150+50*i,board2[i][j].name,{font: '30px Courier', fill:'#ffffff'});
-			}
-		}
+		//for (var i=0;i<3;i++){
+		//	for (var j=0;j<3;j++){
+		//		if (board1[i][j]==0)
+		//			var winLabel = game.add.text(310+80*j,150+50*i,'-',{font: '30px Courier', fill:'#ffffff'});
+		//		else
+		//			var winLabel = game.add.text(310+80*j,150+50*i,board1[i][j].name,{font: '30px Courier', fill:'#ffffff'});
+		//		if (board2[i][j]==0)
+		//			var winLabel = game.add.text(610+80*j,150+50*i,'-',{font: '30px Courier', fill:'#ffffff'});
+		//		else
+		//			var winLabel = game.add.text(610+80*j,150+50*i,board2[i][j].name,{font: '30px Courier', fill:'#ffffff'});
+		//	}
+		//}
 		
 		game.add.button(game.world.width-193-8, 8, 'button', this.Win, this, 2, 1, 0);
 		
@@ -77,7 +79,11 @@
 		button.scale.setTo(0.5,0.5);
 	},
 	
-	update: function () { //updateonlywhenplay/action
+	update: function () {
+		
+	},
+	
+	dispHands: function(){
 		for (var i=0;i<12;i++){
 			if(i<hand1nb)
 				hand1disp[i].text = hand1[i].name;
