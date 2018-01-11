@@ -46,14 +46,24 @@ var deckbuildState = {
 			deck1img[i].events.onInputDown.add(this.removeDeck.bind(this,i), this);
 			deck1txt[i].text = '';
 		}
+		
+		game.add.button(20, 500, 'button', this.autoDeck, this, 2, 1, 0);
+		
 		//deck1nb = 10;
 		//deck1 = [new Card(0), new Card(0), new Card(0), new Card(0), new Card(1), new Card(1), new Card(1), new Card(2), new Card(2), new Card(3)];
 		deck2 = [new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(1), new Card(1)];
 		this.dispDeck();
 		
-		var button = game.add.button(game.world.width-193-8, 8, 'button', this.Win, this, 2, 1, 0);
+		game.add.button(game.world.width-193-8, 8, 'button', this.Win, this, 2, 1, 0);
 		
-		var button = game.add.button(game.world.width-64-8, game.world.height-64-8, 'buttonfull', gofull, this, 1, 0);
+		game.add.button(game.world.width-64-8, game.world.height-64-8, 'buttonfull', gofull, this, 1, 0);
+	},
+	
+	autoDeck: function() {
+		deck1nb = 0;
+		for (var i=0;i<10;i++)
+			this.addDeck(Math.floor(Math.random()*4));
+		this.dispDeck();
 	},
 	
 	addDeck: function(k) {
@@ -102,7 +112,7 @@ var deckbuildState = {
 	},
 	
 	Win: function () {
-		if (arguments[2])
+		if (arguments[2] && (deck1nb == 10))
 			game.state.start('game');
 	}
 
