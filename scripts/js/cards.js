@@ -9,10 +9,11 @@ function Card(id) {
 	this.other = others[id];   
 }
 
-names = ['card1', 'card2', 'card3', 'card4'];
-images = ['card1img', 'card2img', 'card3img', 'card4img'];
-types = ['creature', 'creature', 'creature', 'creature'];
-manas = [1,2,3,4];
-atks = [2,3,3,4];
-defs = [1,2,4,5];
-others = [[],[],[],[]];
+var nb_cards = 4;
+var names = ['card1', 'card2', 'card3', 'card4'];
+var images = ['card1img', 'card2img', 'card3img', 'card4img'];
+var types = ['creature', 'creature', 'creature', 'creature'];
+var manas = [1,2,3,4];
+var atks = [2,3,3,4];
+var defs = [1,2,4,5];
+var others = [[],[],[],[]];
