@@ -34,12 +34,8 @@
 		topdeck1 = 7;
 		topdeck2 = 7;
 		
-		board1 = new Array(3);
-		board2 = new Array(3);
-		for (var i=0;i<3;i++){
-			board1[i] = new Array(3).fill(0);
-			board2[i] = new Array(3).fill(0);
-		}
+		board1 = new Array(9);
+		board2 = new Array(9);
 		
 		var wkey = game.input.keyboard.addKey(Phaser.Keyboard.W);
 		wkey.onDown.add(this.playCard_,this);
@@ -101,18 +97,18 @@
 			game.state.start('win');
 	},
 	
-	playCard: function (player,nb,i,j) {
+	playCard: function (player,nb,i) {
 		if (player == 0){
 			if (hand1nb>0){
 				hand1nb--;
-				board1[i][j] = hand1[nb];
+				board1[i] = hand1[nb];
 				for (var k=nb;k<hand1nb;k++)
 					hand1[k] = hand1[k+1];
 			}
 		}else{
 			if (hand2nb>0){
 				hand2nb--;
-				board2[i][j] = hand2[nb];
+				board2[i] = hand2[nb];
 				for (var k=nb;k<hand2nb;k++)
 					hand2[k] = hand2[k+1];
 			}
@@ -120,7 +116,7 @@
 	},
 	
 	playCard_: function () {
-		this.playCard(0,0,0,0);
+		this.playCard(0,0,0);
 	}	
 
 };
