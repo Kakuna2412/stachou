@@ -15,9 +15,7 @@ var deckbuildState = {
 		
 		game.add.image(0, 0, 'deckbuild_background');
 		
-		previewnbdisp = game.add.retroFont('font', 31, 25, Phaser.RetroFont.TEXT_SET6, 10, 1, 1);
-		var deck1nbdisp_tmp = game.add.image(220, 600, previewnbdisp);
-		deck1nbdisp_tmp.tint = 0x6060FF;
+		previewnbdisp = game.add.text(220, 600, '', {font: "20px Arial", fill: "#ffffff"});
 		
 		preview = new Array(12);
 		previewimg = new Array(12);
@@ -25,7 +23,6 @@ var deckbuildState = {
 		for (var i=0;i<12;i++){
 			previewimg[i] = game.add.image(230+130*(i%4), 40+180*(Math.floor(i/4)), 'cardtemp');
 			previewimg[i].scale.setTo(0.5,0.5);
-			previewimg[i].anchor.set(0, 0);
 			previewimg[i].inputEnabled = true;
 		}
 		this.dispPreview();
@@ -37,14 +34,12 @@ var deckbuildState = {
 		game.add.button(750, 40, 'buttonup', this.previewUp, this, 1, 0);
 		
 		deck1nb = 0;
-		deck1nbdisp = game.add.text(20, 20, deck1nbdisp, {font: "20px Arial", fill: "#ffffff"});
+		deck1nbdisp = game.add.text(20, 20, '', {font: "20px Arial", fill: "#ffffff"});
 		
 		deck1 = new Array(10);
 		deck1img = new Array(10);
 		for (var i=0;i<10;i++){
 			deck1img[i] = game.add.image(20, 50+42*i, 'card_added');
-			deck1img[i].tint = 0x60FFFF;
-			deck1img[i].anchor.set(0, 0);
 			deck1img[i].inputEnabled = true;
 		}
 		this.dispDeck();
@@ -76,15 +71,15 @@ var deckbuildState = {
 		if (previewnb_max>nb_cards) previewnb_max=nb_cards;
 		previewnbdisp.text = previewnb+1 + "-" + previewnb_max + " out of " + nb_cards;
 		for (var i=0;i<12;i++){
+			previewimg[i].events.onInputDown.removeAll(this);
+			previewimg[i].events.onInputOver.removeAll(this);
 			if (previewnb+i<nb_cards){
 				preview[i] = new Card(previewnb+i);
 				this.dispCard(previewimg[i],preview[i]);
-				previewimg[i].events.onInputDown.removeAll(this);
 				previewimg[i].events.onInputDown.add(this.addDeck.bind(this,previewnb+i), this);
 				previewimg[i].events.onInputOver.add(this.dispBigPreview.bind(this,preview[i]), this);
 				previewimg[i].visible=true;
 			}else{
-				previewimg[i].events.onInputDown.removeAll(this);
 				previewimg[i].visible=false;
 			}
 		}
@@ -116,6 +111,8 @@ var deckbuildState = {
 	dispDeck: function() {
 		deck1nbdisp.text = deck1nb + " out of 10";
 		for(var i=0;i<10;i++){
+			deck1img[i].events.onInputDown.removeAll(this);
+			deck1img[i].events.onInputOver.removeAll(this);
 			if (i<deck1nb){
 				deck1img[i].removeChildren();
 				var img = game.add.image(200,0, deck1[i].image);
@@ -125,12 +122,10 @@ var deckbuildState = {
 				var name = game.add.text(10, 9, deck1[i].name, {font: "20px Arial", fill: "#000000"});
 				deck1img[i].addChild(name);
 				
-				deck1img[i].events.onInputDown.removeAll(this);
 				deck1img[i].events.onInputDown.add(this.removeDeck.bind(this,i), this);
 				deck1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,deck1[i]), this);
 				deck1img[i].visible=true;
 			}else{
-				deck1img[i].events.onInputDown.removeAll(this);
 				deck1img[i].visible=false;
 			}
 		}

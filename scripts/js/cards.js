@@ -10,10 +10,10 @@ function Card(id) {
 }
 
 var nb_cards = 13;
-var names = ['Oni Ronin', 'Rakano Outlaw', 'card3', 'card4','card5', 'card6', 'card7', 'card8','card9', 'card10', 'Torch','card12', 'card13'];
+var names = ['Torch', 'Oni Ronin', 'Grenadin Drone', 'Rakano Outlaw','Pyre Adept', 'Golem3', 'Detonate', 'Golem4','Golem5', 'Golem6', 'Golem7','Golem8', 'Golem9'];
 var images = ['card1img', 'card2img', 'card3img', 'card4img', 'card5img', 'card6img', 'card7img', 'card8img', 'card9img', 'card10img', 'card11img', 'card12img', 'card13img'];
-var types = ['Creature', 'Creature', 'Creature', 'Creature', 'Creature', 'Creature', 'Creature', 'Creature', 'Creature', 'Creature', 'Spell', 'Creature', 'Creature'];
-var manas = [1,2,3,4,5,6,7,8,9,10,1,10,10];
-var atks = [2,3,3,4,5,6,7,8,9,10,0,10,10];
-var defs = [1,2,4,5,6,7,8,9,10,11,0,10,10];
+var types = ['Spell', 'Creature', 'Creature', 'Creature', 'Creature', 'Creature', 'Spell', 'Creature', 'Creature', 'Creature', 'Creature', 'Creature', 'Creature'];
+var manas = [1,1,1,2,2,3,4,4,5,6,7,8,9];
+var atks = [0,2,1,2,3,3,0,4,5,6,7,8,9];
+var defs = [0,1,1,2,1,3,0,4,5,6,7,8,9];
 var others = [[],[],[],[],[],[],[],[],[],[],[],[],[]];
