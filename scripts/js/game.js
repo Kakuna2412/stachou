@@ -284,10 +284,15 @@ var gameState = {
 				if(select1img.visible){
 					switch (select[0]){
 						case 'hand1' :
-							select1img.x = hand1img[i].x-2;
-							select1img.y = hand1img[i].y-2;
-							select[1]=i;
-							this.dispTargets(hand1[i]);
+							if (select[1]==i){
+								this.dispTargets(0);
+								select1img.visible = false;
+							}else{
+								select1img.x = hand1img[i].x-2;
+								select1img.y = hand1img[i].y-2;
+								select[1]=i;
+								this.dispTargets(hand1[i]);
+							}
 						break;
 						case 'board_back1' :
 							this.dispTargets(0);
@@ -332,37 +337,37 @@ var gameState = {
 		}
 	},
 	
+	tinter: function(a,b,c,d,e,f,g,h){
+		player1_back.tint = a;
+		player2_back.tint = b;
+		board1_back.tint = c;
+		board2_back.tint = d;
+		for (var i=0;i<handnbmax;i++){
+			hand1img[i].tint = e;
+			hand2img[i].tint = f;
+		}
+		for (var i=0;i<handnbmax;i++){
+			board1img[i].tint = g;
+			board2img[i].tint = h;
+		}
+	},
+	
 	dispTargets: function(card){
 		if (card==0){
-			player1_back.tint = 0xFFFFFF;
-			player2_back.tint = 0xFFFFFF;
-			board1_back.tint = 0xFFFFFF;
-			board2_back.tint = 0xFFFFFF;
+			this.tinter(0xFFFFFF,0xFFFFFF,0xFFFFFF,0xFFFFFF,0xFFFFFF,0xFFFFFF,0xFFFFFF,0xFFFFFF);
 		}else{
 			switch(card.target){
 			case 'Board' :
-				player1_back.tint = 0xFFFFFF;
-				player2_back.tint = 0xFFFFFF;
-				board1_back.tint = 0x2060FF;
-				board2_back.tint = 0xFFFFFF;
+				this.tinter(0x303030,0x303030,0xFFFFFF,0x303030,0x303030,0x303030,0x303030,0x303030);
 			break;
 			case 'AnyChar' :
-				player1_back.tint = 0x2060FF;
-				player2_back.tint = 0x2060FF;
-				board1_back.tint = 0xFFFFFF;
-				board2_back.tint = 0xFFFFFF;
+				this.tinter(0xFFFFFF,0xFFFFFF,0x303030,0x303030,0x303030,0x303030,0xFFFFFF,0xFFFFFF);
 			break;
 			case 'FriendlyCrea' :
-				player1_back.tint = 0xFFFFFF;
-				player2_back.tint = 0xFFFFFF;
-				board1_back.tint = 0xFFFFFF;
-				board2_back.tint = 0xFFFFFF;
+				this.tinter(0x303030,0x303030,0x303030,0x303030,0x303030,0x303030,0xFFFFFF,0x303030);
 			break;
 			case 'EnemyPlayer' :
-				player1_back.tint = 0xFFFFFF;
-				player2_back.tint = 0x2060FF;
-				board1_back.tint = 0xFFFFFF;
-				board2_back.tint = 0xFFFFFF;
+				this.tinter(0x303030,0xFFFFFF,0x303030,0x303030,0x303030,0x303030,0x303030,0x303030);
 			break;
 			default :
 			}
