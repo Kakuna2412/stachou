@@ -57,6 +57,10 @@
 			hand1img[i] = game.add.image(20+70*i, 540, 'cardtemp');
 			hand1img[i].scale.setTo(0.25,0.25);
 			hand1img[i].inputEnabled = true;
+			
+			hand1img[i].events.onInputDown.add(this.selectHand.bind(this,i), this);
+				hand1img[i].events.onInputDown.add(this.dispBigPreview.bind(this,0,i), this);
+				hand1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,0,i), this);
 		}
 		this.dispHand1();
 		
@@ -65,14 +69,23 @@
 			hand2img[i] = game.add.image(20+70*i, 10, 'cardtemp');
 			hand2img[i].scale.setTo(0.25,0.25);
 			hand2img[i].inputEnabled = true;
+			
+			hand2img[i].events.onInputDown.add(this.dispBigPreview.bind(this,1,i), this);
+				hand2img[i].events.onInputOver.add(this.dispBigPreview.bind(this,1,i), this);
 		}
 		this.dispHand2();
+		
+		board1 = new Array(12);
+		board2 = new Array(12);
 		
 		board1img = new Array(12);
 		for (var i=0;i<12;i++){
 			board1img[i] = game.add.image(230+70*(i%6), 330+100*Math.floor(i/6), 'cardtemp');
 			board1img[i].scale.setTo(0.25,0.25);
 			board1img[i].inputEnabled = true;
+			
+				board1img[i].events.onInputDown.add(this.dispBigPreview.bind(this,2,i), this);
+				board1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,2,i), this);
 		}
 		this.dispBoard1();
 		
@@ -81,11 +94,11 @@
 			board2img[i] = game.add.image(230+70*(i%6), 210-100*Math.floor(i/6), 'cardtemp');
 			board2img[i].scale.setTo(0.25,0.25);
 			board2img[i].inputEnabled = true;
+			
+			board2img[i].events.onInputDown.add(this.dispBigPreview.bind(this,3,i), this);
+				board2img[i].events.onInputOver.add(this.dispBigPreview.bind(this,3,i), this);
 		}
 		this.dispBoard2();
-		
-		board1 = new Array(12);
-		board2 = new Array(12);
 		
 		bigPreview = game.add.image(1024-20-243,(640-338)/2, 'cardtemp');
 		bigPreview.visible = false;		
@@ -120,13 +133,8 @@
 	
 	dispHand1: function(){
 		for (var i=0;i<12;i++){
-			hand1img[i].events.onInputDown.removeAll(this);
-			hand1img[i].events.onInputOver.removeAll(this);
 			if (i<hand1nb){
 				this.dispCard(hand1img[i],hand1[i]);
-				hand1img[i].events.onInputDown.add(this.selectHand.bind(this,i), this);
-				hand1img[i].events.onInputDown.add(this.dispBigPreview.bind(this,hand1[i]), this);
-				hand1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,hand1[i]), this);
 				hand1img[i].visible=true;
 			}else{
 				hand1img[i].visible=false;
@@ -136,11 +144,8 @@
 	
 	dispHand2: function(){
 		for (var i=0;i<12;i++){
-			hand2img[i].events.onInputOver.removeAll(this);
 			if (i<hand2nb){
 				this.dispCard(hand2img[i],hand2[i]);
-				hand2img[i].events.onInputDown.add(this.dispBigPreview.bind(this,hand2[i]), this);
-				hand2img[i].events.onInputOver.add(this.dispBigPreview.bind(this,hand2[i]), this);
 				hand2img[i].visible=true;
 			}else{
 				hand2img[i].visible=false;
@@ -151,11 +156,8 @@
 	dispBoard1: function(){
 		hp1disp.text = hp1 + "";
 		for (var i=0;i<12;i++){
-			board1img[i].events.onInputOver.removeAll(this);
 			if (i<board1nb){
 				this.dispCard(board1img[i],board1[i]);
-				board1img[i].events.onInputDown.add(this.dispBigPreview.bind(this,board1[i]), this);
-				board1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,board1[i]), this);
 				board1img[i].visible=true;
 			}else{
 				board1img[i].visible=false;
@@ -166,11 +168,8 @@
 	dispBoard2: function(){
 		hp2disp.text = hp2 + "";
 		for (var i=0;i<12;i++){
-			board2img[i].events.onInputOver.removeAll(this);
-			if (i<board1nb){
+			if (i<board2nb){
 				this.dispCard(board2img[i],board2[i]);
-				board2img[i].events.onInputDown.add(this.dispBigPreview.bind(this,board2[i]), this);
-				board2img[i].events.onInputOver.add(this.dispBigPreview.bind(this,board2[i]), this);
 				board2img[i].visible=true;
 			}else{
 				board2img[i].visible=false;
@@ -178,8 +177,14 @@
 		}
 	},
 	
-	dispBigPreview: function(card){
-		this.dispCard(bigPreview,card);
+	dispBigPreview: function(h1h2b1b2,i){
+		switch(h1h2b1b2){
+			case 0 : this.dispCard(bigPreview,hand1[i]); break;
+			case 1 : this.dispCard(bigPreview,hand2[i]); break;
+			case 2 : this.dispCard(bigPreview,board1[i]); break;
+			case 3 : this.dispCard(bigPreview,board2[i]); break;
+			default :
+		}
 		bigPreview.visible = true;
 	},
 	
