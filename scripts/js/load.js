@@ -25,9 +25,12 @@ var loadState = {
 		game.load.image('card_added', 'assets/deckbuild/card_added.png');
 		
 		game.load.image('game_background', 'assets/game/game_background.jpg');
+		game.load.image('board1', 'assets/game/board1.png');
+		game.load.image('board2', 'assets/game/board2.png');
 		
 		game.load.image('select', 'assets/cards/select.png');
 		game.load.image('cardtemp', 'assets/cards/card_tmp.png');
+		game.load.image('card0img', 'assets/cards/card0.jpg');
 		game.load.image('card1img', 'assets/cards/card1.jpg');
 		game.load.image('card2img', 'assets/cards/card2.jpg');
 		game.load.image('card3img', 'assets/cards/card3.jpg');

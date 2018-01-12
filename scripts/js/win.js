@@ -12,7 +12,7 @@ var winState = {
 	
 	restart: function () {
 		if (arguments[2])
-			game.state.start('menu');
+			game.state.start('deckbuild');
 	}
 
 };

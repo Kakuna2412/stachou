@@ -12,6 +12,7 @@ var mana1disp;
 var mana2;
 var mana2tot;
 var mana2disp;
+var manaplayedthisturn;
 var turn;
 var hand1nb;
 var hand2nb;
@@ -39,9 +40,11 @@ var gameState = {
 		mana2 = 0;
 		mana1tot = 1;
 		mana2tot = 0;
-		var back = game.add.image(0, 0, 'game_background');
-		back.inputEnabled=true;
-		back.events.onInputDown.add(this.selectBoard, this);
+		game.add.image(0, 0, 'game_background');
+		var board1_back = game.add.image(220, 320, 'board1');
+		var board2_back = game.add.image(220, 100, 'board2');
+		board1_back.inputEnabled=true;
+		board1_back.events.onInputDown.add(this.selectBoard, this);
 		selectimg = game.add.image(0, 0, 'select');
 		selectimg.scale.setTo(0.25,0.25);
 		selectimg.visible = false;
@@ -63,8 +66,8 @@ var gameState = {
 		deck2leftdisp = game.add.text(60, 160, '', {font: "20px Arial", fill: "#ffffff"});
 		mana1disp = game.add.text(60, 380, '', {font: "20px Arial", fill: "#ffffff"});
 		mana2disp = game.add.text(60, 220, '', {font: "20px Arial", fill: "#ffffff"});
-		hand1 = new Array(12);
-		hand2 = new Array(12);
+		hand1 = new Array(handnbmax);
+		hand2 = new Array(handnbmax);
 		hand1nb = 7;
 		hand2nb = 7;
 		for (var i=0;i<7;i++){
@@ -74,8 +77,8 @@ var gameState = {
 		topdeck1 = 7;
 		topdeck2 = 7;
 		
-		hand1img = new Array(12);
-		for (var i=0;i<12;i++){
+		hand1img = new Array(boardnbmax);
+		for (var i=0;i<boardnbmax;i++){
 			hand1img[i] = game.add.image(20+70*i, 540, 'cardtemp');
 			hand1img[i].scale.setTo(0.25,0.25);
 			hand1img[i].inputEnabled = true;
@@ -85,8 +88,8 @@ var gameState = {
 		}
 		this.dispHand1();
 		
-		hand2img = new Array(12);
-		for (var i=0;i<12;i++){
+		hand2img = new Array(boardnbmax);
+		for (var i=0;i<boardnbmax;i++){
 			hand2img[i] = game.add.image(20+70*i, 10, 'cardtemp');
 			hand2img[i].scale.setTo(0.25,0.25);
 			hand2img[i].inputEnabled = true;
@@ -95,11 +98,11 @@ var gameState = {
 		}
 		this.dispHand2();
 		
-		board1 = new Array(12);
-		board2 = new Array(12);
+		board1 = new Array(boardnbmax);
+		board2 = new Array(boardnbmax);
 		
-		board1img = new Array(12);
-		for (var i=0;i<12;i++){
+		board1img = new Array(boardnbmax);
+		for (var i=0;i<boardnbmax;i++){
 			board1img[i] = game.add.image(230+70*(i%6), 330+100*Math.floor(i/6), 'cardtemp');
 			board1img[i].scale.setTo(0.25,0.25);
 			board1img[i].inputEnabled = true;
@@ -108,8 +111,8 @@ var gameState = {
 		}
 		this.dispBoard1();
 		
-		board2img = new Array(12);
-		for (var i=0;i<12;i++){
+		board2img = new Array(boardnbmax);
+		for (var i=0;i<boardnbmax;i++){
 			board2img[i] = game.add.image(230+70*(i%6), 210-100*Math.floor(i/6), 'cardtemp');
 			board2img[i].scale.setTo(0.25,0.25);
 			board2img[i].inputEnabled = true;
@@ -133,6 +136,7 @@ var gameState = {
 	
 	changeTurn: function() {
 		hp2--;
+		manaplayedthisturn = 0;
 		if(turn==0){
 			turn = 1;
 			mana2tot++;
@@ -151,26 +155,6 @@ var gameState = {
 		this.changeTurn();
 	},
 	
-	dispCard: function(cardimg,card) {
-		cardimg.removeChildren();
-		var img = game.add.image(20,40, card.image);
-		cardimg.addChild(img);
-		var name = game.add.text(21, 17, card.name, {font: "17px Arial", fill: "#000000"});
-		cardimg.addChild(name);
-		var mana = game.add.text(222, 17, card.mana, {font: "17px Arial", fill: "#000000"});
-		mana.anchor.set(1,0);
-		cardimg.addChild(mana);
-		var type = game.add.text(21, 189, card.type, {font: "17px Arial", fill: "#000000"});
-		cardimg.addChild(type);
-		if (card.type=='Creature'){
-			var atkdef = game.add.text(218, 328, card.atk + "/" + card.def, {font: "18px Arial", fill: "#000000"});
-			atkdef.anchor.set(1,1);
-			cardimg.addChild(atkdef);
-		}
-		var text = game.add.text(25, 215, card.text, {font: "17px Arial", fill: "#000000"});
-		cardimg.addChild(text);
-	},
-	
 	dispAll: function() {
 		this.dispHand1();
 		this.dispHand2();
@@ -179,9 +163,9 @@ var gameState = {
 	},
 	
 	dispHand1: function() {
-		for (var i=0;i<12;i++){
+		for (var i=0;i<handnbmax;i++){
 			if (i<hand1nb){
-				this.dispCard(hand1img[i],hand1[i]);
+				dispCard(hand1img[i],hand1[i]);
 				hand1img[i].visible=true;
 			}else{
 				hand1img[i].visible=false;
@@ -190,9 +174,9 @@ var gameState = {
 	},
 	
 	dispHand2: function(){
-		for (var i=0;i<12;i++){
+		for (var i=0;i<handnbmax;i++){
 			if (i<hand2nb){
-				this.dispCard(hand2img[i],hand2[i]);
+				dispCard(hand2img[i],hand2[i]);
 				hand2img[i].visible=true;
 			}else{
 				hand2img[i].visible=false;
@@ -202,12 +186,12 @@ var gameState = {
 	
 	dispBoard1: function(){
 		hp1disp.text = "HP : " + hp1;
-		var cardsleft = 10-topdeck1;
+		var cardsleft = decknbmax-topdeck1;
 		deck1leftdisp.text = "Cards left : " + cardsleft;
 		mana1disp.text = "Mana : " + mana1 + "/" + mana1tot;
-		for (var i=0;i<12;i++){
+		for (var i=0;i<boardnbmax;i++){
 			if (i<board1nb){
-				this.dispCard(board1img[i],board1[i]);
+				dispCard(board1img[i],board1[i]);
 				board1img[i].visible=true;
 			}else{
 				board1img[i].visible=false;
@@ -218,12 +202,12 @@ var gameState = {
 	dispBoard2: function(){
 		if (hp2<=0) this.Win();
 		hp2disp.text = "HP : " + hp2;
-		var cardsleft = 10-topdeck2;
+		var cardsleft = decknbmax-topdeck2;
 		deck2leftdisp.text = "Cards left : " + cardsleft;
 		mana2disp.text = "Mana : " + mana2 + "/" + mana2tot;
-		for (var i=0;i<12;i++){
+		for (var i=0;i<boardnbmax;i++){
 			if (i<board2nb){
-				this.dispCard(board2img[i],board2[i]);
+				dispCard(board2img[i],board2[i]);
 				board2img[i].visible=true;
 			}else{
 				board2img[i].visible=false;
@@ -233,10 +217,10 @@ var gameState = {
 	
 	dispBigPreview: function(h1h2b1b2,i){
 		switch(h1h2b1b2){
-			case 0 : this.dispCard(bigPreview,hand1[i]); break;
-			case 1 : this.dispCard(bigPreview,hand2[i]); break;
-			case 2 : this.dispCard(bigPreview,board1[i]); break;
-			case 3 : this.dispCard(bigPreview,board2[i]); break;
+			case 0 : dispCard(bigPreview,hand1[i]); break;
+			case 1 : dispCard(bigPreview,hand2[i]); break;
+			case 2 : dispCard(bigPreview,board1[i]); break;
+			case 3 : dispCard(bigPreview,board2[i]); break;
 			default :
 		}
 		bigPreview.visible = true;
