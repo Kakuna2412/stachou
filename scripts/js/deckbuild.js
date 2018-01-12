@@ -1,11 +1,11 @@
-var previewgroup;
 var previewnb;
+var previewnbdisp;
 var preview;
 var previewimg;
+var bigPreview;
 var deck1nb;
 var deck1nbdisp;
 var deck1;
-var deck1txt;
 var deck1img;
 var deck2;
 
@@ -15,49 +15,45 @@ var deckbuildState = {
 		
 		game.add.image(0, 0, 'deckbuild_background');
 		
-		previewgroup = game.add.group(); //previewgroup.create(x,y,'img');sprite
+		previewnbdisp = game.add.retroFont('font', 31, 25, Phaser.RetroFont.TEXT_SET6, 10, 1, 1);
+		var deck1nbdisp_tmp = game.add.image(220, 600, previewnbdisp);
+		deck1nbdisp_tmp.tint = 0x6060FF;
+		
 		preview = new Array(12);
 		previewimg = new Array(12);
 		previewnb = 0;
 		for (var i=0;i<12;i++){
-			previewimg[i] = game.add.image(400+130*(i%4), 100+180*(Math.floor(i/4)), 'cardtemp');
+			previewimg[i] = game.add.image(230+130*(i%4), 40+180*(Math.floor(i/4)), 'cardtemp');
 			previewimg[i].scale.setTo(0.5,0.5);
 			previewimg[i].anchor.set(0, 0);
 			previewimg[i].inputEnabled = true;
-			previewimg[i].events.onInputDown.add(this.addDeck.bind(this,i), this);
 		}
 		this.dispPreview();
 		
+		bigPreview = game.add.image(1024-20-243,(640-338)/2, 'cardtemp');
+		bigPreview.visible = false;
+		
+		game.add.button(750, 540, 'buttondown', this.previewDown, this, 1, 0);
+		game.add.button(750, 40, 'buttonup', this.previewUp, this, 1, 0);
+		
 		deck1nb = 0;
-		deck1nbdisp = game.add.retroFont('font', 31, 25, Phaser.RetroFont.TEXT_SET6, 10, 1, 1);
-		var deck1nbdisp_tmp = game.add.image(20, 600, deck1nbdisp);
-		deck1nbdisp_tmp.tint = 0x6060FF;
-		deck1nbdisp_tmp.anchor.set(0, 0);
+		deck1nbdisp = game.add.text(20, 20, deck1nbdisp, {font: "20px Arial", fill: "#ffffff"});
 		
 		deck1 = new Array(10);
-		deck1txt = new Array(10);
 		deck1img = new Array(10);
 		for (var i=0;i<10;i++){
-			deck1txt[i] = game.add.retroFont('font', 31, 25, Phaser.RetroFont.TEXT_SET6, 10, 1, 1);
-			deck1img[i] = game.add.image(20, 20+40*i, deck1txt[i]);
+			deck1img[i] = game.add.image(20, 50+42*i, 'card_added');
 			deck1img[i].tint = 0x60FFFF;
 			deck1img[i].anchor.set(0, 0);
 			deck1img[i].inputEnabled = true;
-			deck1img[i].events.onInputDown.add(this.removeDeck.bind(this,i), this);
-			deck1txt[i].text = '';
 		}
+		this.dispDeck();
 		
 		game.add.button(20, 500, 'buttonauto', this.autoDeck, this, 2, 1, 0);
 
 		deck2 = [new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(1), new Card(1)];
-		this.dispDeck();
 		
 		game.add.button(game.world.width-193-8, 8, 'button', this.startGame, this, 2, 1, 0);
-		
-		var button = game.add.button(game.world.width-32-8, game.world.height-32-8-64, 'buttonfull', this.previewDown, this, 1, 0);
-		button.scale.setTo(0.5,0.5);
-		var button = game.add.button(game.world.width-32-8, 150, 'buttonfull', this.previewUp, this, 1, 0);
-		button.scale.setTo(0.5,0.5);
 		
 		var button = game.add.button(game.world.width-32-8, game.world.height-32-8, 'buttonfull', gofull, this, 1, 0);
 		button.scale.setTo(0.5,0.5);
@@ -76,30 +72,66 @@ var deckbuildState = {
 	},
 	
 	dispPreview: function() {
+		var previewnb_max = previewnb+12;
+		if (previewnb_max>nb_cards) previewnb_max=nb_cards;
+		previewnbdisp.text = previewnb+1 + "-" + previewnb_max + " out of " + nb_cards;
 		for (var i=0;i<12;i++){
 			if (previewnb+i<nb_cards){
 				preview[i] = new Card(previewnb+i);
-				previewimg[i].removeChildren();
-				var img = game.add.image(20,40, preview[i].image);
-				previewimg[i].addChild(img);
-				var name = game.add.text(20, 14, preview[i].name, {font: "20px Arial", fill: "#0080ff"});
-				previewimg[i].addChild(name);
-				var mana = game.add.text(223, 14, preview[i].mana, {font: "20px Arial", fill: "#0080ff"});
-				mana.anchor.set(1,0);
-				previewimg[i].addChild(mana);
-				var type = game.add.text(20, 186, preview[i].type, {font: "20px Arial", fill: "#0080ff"});
-				previewimg[i].addChild(type);
-				if (preview[i].type=='creature'){
-					var atkdef = game.add.text(220, 328, preview[i].atk + "/" + preview[i].def, {font: "20px Arial", fill: "#0080ff"});
-					atkdef.anchor.set(1,1);
-					previewimg[i].addChild(atkdef);
-				}
+				this.dispCard(previewimg[i],preview[i]);
 				previewimg[i].events.onInputDown.removeAll(this);
 				previewimg[i].events.onInputDown.add(this.addDeck.bind(this,previewnb+i), this);
+				previewimg[i].events.onInputOver.add(this.dispBigPreview.bind(this,preview[i]), this);
 				previewimg[i].visible=true;
 			}else{
 				previewimg[i].events.onInputDown.removeAll(this);
 				previewimg[i].visible=false;
+			}
+		}
+	},
+	
+	dispBigPreview: function(card) {
+		this.dispCard(bigPreview,card);
+		bigPreview.visible = true;
+	},
+	
+	dispCard: function(cardimg,card) {
+		cardimg.removeChildren();
+		var img = game.add.image(20,40, card.image);
+		cardimg.addChild(img);
+		var name = game.add.text(21, 17, card.name, {font: "17px Arial", fill: "#000000"});
+		cardimg.addChild(name);
+		var mana = game.add.text(222, 17, card.mana, {font: "17px Arial", fill: "#000000"});
+		mana.anchor.set(1,0);
+		cardimg.addChild(mana);
+		var type = game.add.text(21, 189, card.type, {font: "17px Arial", fill: "#000000"});
+		cardimg.addChild(type);
+		if (card.type=='Creature'){
+			var atkdef = game.add.text(218, 328, card.atk + "/" + card.def, {font: "18px Arial", fill: "#000000"});
+			atkdef.anchor.set(1,1);
+			cardimg.addChild(atkdef);
+		}
+	},
+	
+	dispDeck: function() {
+		deck1nbdisp.text = deck1nb + " out of 10";
+		for(var i=0;i<10;i++){
+			if (i<deck1nb){
+				deck1img[i].removeChildren();
+				var img = game.add.image(200,0, deck1[i].image);
+				img.anchor.set(1,0);
+				img.scale.setTo(40/148,40/148)
+				deck1img[i].addChild(img);
+				var name = game.add.text(10, 9, deck1[i].name, {font: "20px Arial", fill: "#000000"});
+				deck1img[i].addChild(name);
+				
+				deck1img[i].events.onInputDown.removeAll(this);
+				deck1img[i].events.onInputDown.add(this.removeDeck.bind(this,i), this);
+				deck1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,deck1[i]), this);
+				deck1img[i].visible=true;
+			}else{
+				deck1img[i].events.onInputDown.removeAll(this);
+				deck1img[i].visible=false;
 			}
 		}
 	},
@@ -139,16 +171,6 @@ var deckbuildState = {
 				deck1[i] = deck1[i+1];
 		}
 		this.dispDeck();
-	},
-	
-	dispDeck: function() {
-		deck1nbdisp.text = deck1nb + " out of 10";
-		for(var i=0;i<10;i++){
-			if (i<deck1nb)
-				deck1txt[i].text = deck1[i].name;
-			else
-				deck1txt[i].text = '';
-		}
 	},
 	
 	update: function () {

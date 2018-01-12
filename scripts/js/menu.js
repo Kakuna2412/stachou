@@ -50,6 +50,7 @@ var menuState = {
 		var font1_add = game.add.image(game.world.centerX, game.world.centerY-16, font1);
 		font1_add.tint = 0xFFFFFF;
 		font1_add.anchor.set(0.5, 1);
+		font1.text = "Stachou";
 
 		game.add.button(game.world.width-193-8, 8, 'button', this.start, this, 2, 1, 0);
 		
@@ -58,7 +59,6 @@ var menuState = {
 	},
 	
 	update: function () {
-		font1.text = "Stachou";
 		font2.text = "x " + game.input.x + " y " + game.input.y;
 	},
 	
