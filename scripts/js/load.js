@@ -27,6 +27,8 @@ var loadState = {
 		game.load.image('game_background', 'assets/game/game_background.jpg');
 		game.load.image('board1', 'assets/game/board1.png');
 		game.load.image('board2', 'assets/game/board2.png');
+		game.load.image('player1', 'assets/game/player1.png');
+		game.load.image('player2', 'assets/game/player2.png');
 		
 		game.load.image('select', 'assets/cards/select.png');
 		game.load.image('cardtemp', 'assets/cards/card_tmp.png');

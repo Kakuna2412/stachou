@@ -70,7 +70,9 @@ var deckbuildState = {
 		game.add.button(48, 540, 'buttonauto', this.autoDeck, this, 2, 1, 0);
 
 		//Init Deck 2
-		deck2 = [new Card(1), new Card(1), new Card(1), new Card(1), new Card(1), new Card(1), new Card(1), new Card(1), new Card(1), new Card(1)];
+		deck2 = new Array(decknbmax);
+		for (var i=0;i<decknbmax;i++)
+			deck2[i] = new Card(0);
 		
 		//Button Fight
 		game.add.button(game.world.width-193-8, 8, 'button', this.startGame, this, 2, 1, 0);
