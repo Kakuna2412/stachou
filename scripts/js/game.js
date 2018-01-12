@@ -167,6 +167,8 @@ var gameState = {
 			atkdef.anchor.set(1,1);
 			cardimg.addChild(atkdef);
 		}
+		var text = game.add.text(25, 215, card.text, {font: "17px Arial", fill: "#000000"});
+		cardimg.addChild(text);
 	},
 	
 	dispAll: function() {

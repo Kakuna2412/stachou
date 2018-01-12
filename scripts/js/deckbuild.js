@@ -4,16 +4,22 @@ var preview;
 var previewimg;
 var bigPreview;
 var deck1nb;
+var deck1nbdiff;
 var deck1nbdisp;
 var deck1;
 var deck1img;
 var deck2;
+var myCollectionRemain;
 
 var deckbuildState = {
 	
 	create: function () {
 		
 		game.add.image(0, 0, 'deckbuild_background');
+		
+		myCollectionRemain = Array(nb_cards);
+		for (var i=0;i<nb_cards;i++)
+			myCollectionRemain[i] = myCollection[i];
 		
 		previewnbdisp = game.add.text(220, 600, '', {font: "20px Arial", fill: "#ffffff"});
 		
@@ -37,6 +43,7 @@ var deckbuildState = {
 		game.add.button(750, 40, 'buttonup', this.previewUp, this, 1, 0);
 		
 		deck1nb = 0;
+		deck1nbdiff = 0;
 		deck1nbdisp = game.add.text(20, 20, '', {font: "20px Arial", fill: "#ffffff"});
 		
 		deck1 = new Array(10);
@@ -75,11 +82,20 @@ var deckbuildState = {
 	dispPreview: function() {
 		var previewnb_max = previewnb+12;
 		if (previewnb_max>nb_cards) previewnb_max=nb_cards;
-		previewnbdisp.text = previewnb+1 + "-" + previewnb_max + " out of " + nb_cards;
+		if (previewnb+1==previewnb_max)
+			previewnbdisp.text = previewnb+1 + "/" + nb_cards;
+		else
+			previewnbdisp.text = previewnb+1 + "-" + previewnb_max + "/" + nb_cards;
 		for (var i=0;i<12;i++){
 			if (previewnb+i<nb_cards){
 				preview[i] = new Card(previewnb+i);
 				this.dispCard(previewimg[i],preview[i]);
+				var myCollec = game.add.text(120, 280, myCollectionRemain[previewnb+i] + "/" + myCollection[previewnb+i], {font: "17px Arial", fill: "#000000"});
+				previewimg[i].addChild(myCollec);
+				if (myCollectionRemain[previewnb+i]==0)
+					previewimg[i].tint = 0x303030;
+				else
+					previewimg[i].tint = 0xFFFFFF;
 				previewimg[i].visible=true;
 			}else{
 				previewimg[i].visible=false;
@@ -106,15 +122,17 @@ var deckbuildState = {
 		cardimg.addChild(mana);
 		var type = game.add.text(21, 189, card.type, {font: "17px Arial", fill: "#000000"});
 		cardimg.addChild(type);
-		if (card.type=='Creature'){
+		if ((card.type=='Creature') || (card.type=='Weapon')){
 			var atkdef = game.add.text(218, 328, card.atk + "/" + card.def, {font: "18px Arial", fill: "#000000"});
 			atkdef.anchor.set(1,1);
 			cardimg.addChild(atkdef);
 		}
+		var text = game.add.text(25, 215, card.text, {font: "17px Arial", fill: "#000000"});
+		cardimg.addChild(text);
 	},
 	
 	dispDeck: function() {
-		deck1nbdisp.text = deck1nb + " out of 10";
+		deck1nbdisp.text = "Cards : " + deck1nb + "/10";
 		for(var i=0;i<10;i++){
 			if (i<deck1nb){
 				deck1img[i].removeChildren();
@@ -133,7 +151,7 @@ var deckbuildState = {
 	},
 	
 	autoDeck: function() {
-		for (var i=deck1nb;i<10;i++)
+		while (deck1nb<10)
 			this.addDeck(Math.floor(Math.random()*nb_cards));
 		this.dispDeck();
 	},
@@ -144,34 +162,42 @@ var deckbuildState = {
 	},
 	
 	addDeck: function(k) {
-		if (deck1nb==0)
-			deck1[0] = new Card(k);
-		if (deck1nb<10){
-			var put = 0;
-			for (var i=deck1nb-1;i>=0;i--){
-				if (!put){
-					if (k>deck1[i].id){
-						deck1[i+1] = new Card(k);
-						put = 1;
-					}else{
-						deck1[i+1] = deck1[i];
-						if(i==0)
-							deck1[i] = new Card(k);
+		if (myCollectionRemain[k]>0){
+			if (deck1nb==0){
+				deck1[0] = new Card(k);
+				deck1nb++;
+				myCollectionRemain[k]--;
+			}else if (deck1nb<10){
+				var put = 0;
+				for (var i=deck1nb-1;i>=0;i--){
+					if (!put){
+						if (k>deck1[i].id){
+							deck1[i+1] = new Card(k);
+							put = 1;
+						}else{
+							deck1[i+1] = deck1[i];
+							if(i==0)
+								deck1[i] = new Card(k);
+						}
 					}
 				}
+				deck1nb++;
+				myCollectionRemain[k]--;
 			}
-			deck1nb++;
 		}
 		this.dispDeck();
+		this.dispPreview();
 	},
 	
 	removeDeck: function(k) {
+		myCollectionRemain[deck1[k].id]++;
 		if (deck1nb>0 && k<deck1nb){
 			deck1nb--;
 			for (var i=k;i<deck1nb;i++)
 				deck1[i] = deck1[i+1];
 		}
 		this.dispDeck();
+		this.dispPreview();
 	},
 	
 	update: function () {
