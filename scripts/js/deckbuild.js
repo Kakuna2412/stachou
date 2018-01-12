@@ -26,7 +26,7 @@ var deckbuildState = {
 			previewimg[i].inputEnabled = true;
 			previewimg[i].events.onInputDown.add(this.dispBigPreview.bind(this,1,i), this);
 			previewimg[i].events.onInputOver.add(this.dispBigPreview.bind(this,1,i), this);
-			previewimg[i].events.onInputDown.add(this.addDeck.bind(this,previewnb+i), this);
+			previewimg[i].events.onInputDown.add(this.addDeck_.bind(this,i), this);
 		}
 		this.dispPreview();
 		
@@ -136,6 +136,11 @@ var deckbuildState = {
 		for (var i=deck1nb;i<10;i++)
 			this.addDeck(Math.floor(Math.random()*nb_cards));
 		this.dispDeck();
+	},
+	
+	addDeck_: function(k) {
+		k += previewnb;
+		this.addDeck(k);
 	},
 	
 	addDeck: function(k) {
