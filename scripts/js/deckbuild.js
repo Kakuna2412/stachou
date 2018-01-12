@@ -77,6 +77,7 @@ var deckbuildState = {
 				preview[i] = new Card(previewnb+i);
 				this.dispCard(previewimg[i],preview[i]);
 				previewimg[i].events.onInputDown.add(this.addDeck.bind(this,previewnb+i), this);
+				previewimg[i].events.onInputDown.add(this.dispBigPreview.bind(this,preview[i]), this);
 				previewimg[i].events.onInputOver.add(this.dispBigPreview.bind(this,preview[i]), this);
 				previewimg[i].visible=true;
 			}else{
@@ -123,6 +124,7 @@ var deckbuildState = {
 				deck1img[i].addChild(name);
 				
 				deck1img[i].events.onInputDown.add(this.removeDeck.bind(this,i), this);
+				deck1img[i].events.onInputDown.add(this.dispBigPreview.bind(this,deck1[i]), this);
 				deck1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,deck1[i]), this);
 				deck1img[i].visible=true;
 			}else{

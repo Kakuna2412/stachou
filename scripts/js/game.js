@@ -125,6 +125,7 @@
 			if (i<hand1nb){
 				this.dispCard(hand1img[i],hand1[i]);
 				hand1img[i].events.onInputDown.add(this.selectHand.bind(this,i), this);
+				hand1img[i].events.onInputDown.add(this.dispBigPreview.bind(this,hand1[i]), this);
 				hand1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,hand1[i]), this);
 				hand1img[i].visible=true;
 			}else{
@@ -138,6 +139,7 @@
 			hand2img[i].events.onInputOver.removeAll(this);
 			if (i<hand2nb){
 				this.dispCard(hand2img[i],hand2[i]);
+				hand2img[i].events.onInputDown.add(this.dispBigPreview.bind(this,hand2[i]), this);
 				hand2img[i].events.onInputOver.add(this.dispBigPreview.bind(this,hand2[i]), this);
 				hand2img[i].visible=true;
 			}else{
@@ -152,6 +154,7 @@
 			board1img[i].events.onInputOver.removeAll(this);
 			if (i<board1nb){
 				this.dispCard(board1img[i],board1[i]);
+				board1img[i].events.onInputDown.add(this.dispBigPreview.bind(this,board1[i]), this);
 				board1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,board1[i]), this);
 				board1img[i].visible=true;
 			}else{
@@ -166,6 +169,7 @@
 			board2img[i].events.onInputOver.removeAll(this);
 			if (i<board1nb){
 				this.dispCard(board2img[i],board2[i]);
+				board2img[i].events.onInputDown.add(this.dispBigPreview.bind(this,board2[i]), this);
 				board2img[i].events.onInputOver.add(this.dispBigPreview.bind(this,board2[i]), this);
 				board2img[i].visible=true;
 			}else{
