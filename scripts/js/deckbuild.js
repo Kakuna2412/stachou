@@ -52,7 +52,7 @@ var deckbuildState = {
 		
 		game.add.button(20, 500, 'buttonauto', this.autoDeck, this, 2, 1, 0);
 
-		deck2 = [new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(0), new Card(1), new Card(1)];
+		deck2 = [new Card(1), new Card(1), new Card(1), new Card(1), new Card(1), new Card(1), new Card(1), new Card(1), new Card(1), new Card(1)];
 		
 		game.add.button(game.world.width-193-8, 8, 'button', this.startGame, this, 2, 1, 0);
 		
