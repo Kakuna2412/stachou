@@ -24,11 +24,9 @@ var deckbuildState = {
 			previewimg[i] = game.add.image(230+130*(i%4), 40+180*(Math.floor(i/4)), 'cardtemp');
 			previewimg[i].scale.setTo(0.5,0.5);
 			previewimg[i].inputEnabled = true;
-			
-			
-				previewimg[i].events.onInputDown.add(this.addDeck.bind(this,previewnb+i), this);
-				previewimg[i].events.onInputDown.add(this.dispBigPreview.bind(this,1,i), this);
-				previewimg[i].events.onInputOver.add(this.dispBigPreview.bind(this,1,i), this);
+			previewimg[i].events.onInputDown.add(this.dispBigPreview.bind(this,1,i), this);
+			previewimg[i].events.onInputOver.add(this.dispBigPreview.bind(this,1,i), this);
+			previewimg[i].events.onInputDown.add(this.addDeck.bind(this,previewnb+i), this);
 		}
 		this.dispPreview();
 		
@@ -46,10 +44,9 @@ var deckbuildState = {
 		for (var i=0;i<10;i++){
 			deck1img[i] = game.add.image(20, 50+42*i, 'card_added');
 			deck1img[i].inputEnabled = true;
-			
-				deck1img[i].events.onInputDown.add(this.removeDeck.bind(this,i), this);
-				deck1img[i].events.onInputDown.add(this.dispBigPreview.bind(this,0,i), this);
-				deck1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,0,i), this);
+			deck1img[i].events.onInputDown.add(this.dispBigPreview.bind(this,0,i), this);
+			deck1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,0,i), this);
+			deck1img[i].events.onInputDown.add(this.removeDeck.bind(this,i), this);
 		}
 		this.dispDeck();
 		

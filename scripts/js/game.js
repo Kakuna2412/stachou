@@ -57,10 +57,9 @@
 			hand1img[i] = game.add.image(20+70*i, 540, 'cardtemp');
 			hand1img[i].scale.setTo(0.25,0.25);
 			hand1img[i].inputEnabled = true;
-			
+			hand1img[i].events.onInputDown.add(this.dispBigPreview.bind(this,0,i), this);
+			hand1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,0,i), this);
 			hand1img[i].events.onInputDown.add(this.selectHand.bind(this,i), this);
-				hand1img[i].events.onInputDown.add(this.dispBigPreview.bind(this,0,i), this);
-				hand1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,0,i), this);
 		}
 		this.dispHand1();
 		
@@ -69,9 +68,8 @@
 			hand2img[i] = game.add.image(20+70*i, 10, 'cardtemp');
 			hand2img[i].scale.setTo(0.25,0.25);
 			hand2img[i].inputEnabled = true;
-			
 			hand2img[i].events.onInputDown.add(this.dispBigPreview.bind(this,1,i), this);
-				hand2img[i].events.onInputOver.add(this.dispBigPreview.bind(this,1,i), this);
+			hand2img[i].events.onInputOver.add(this.dispBigPreview.bind(this,1,i), this);
 		}
 		this.dispHand2();
 		
@@ -83,9 +81,8 @@
 			board1img[i] = game.add.image(230+70*(i%6), 330+100*Math.floor(i/6), 'cardtemp');
 			board1img[i].scale.setTo(0.25,0.25);
 			board1img[i].inputEnabled = true;
-			
-				board1img[i].events.onInputDown.add(this.dispBigPreview.bind(this,2,i), this);
-				board1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,2,i), this);
+			board1img[i].events.onInputDown.add(this.dispBigPreview.bind(this,2,i), this);
+			board1img[i].events.onInputOver.add(this.dispBigPreview.bind(this,2,i), this);
 		}
 		this.dispBoard1();
 		
@@ -94,9 +91,8 @@
 			board2img[i] = game.add.image(230+70*(i%6), 210-100*Math.floor(i/6), 'cardtemp');
 			board2img[i].scale.setTo(0.25,0.25);
 			board2img[i].inputEnabled = true;
-			
 			board2img[i].events.onInputDown.add(this.dispBigPreview.bind(this,3,i), this);
-				board2img[i].events.onInputOver.add(this.dispBigPreview.bind(this,3,i), this);
+			board2img[i].events.onInputOver.add(this.dispBigPreview.bind(this,3,i), this);
 		}
 		this.dispBoard2();
 		
